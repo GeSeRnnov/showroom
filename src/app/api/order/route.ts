@@ -1,23 +1,35 @@
 import { NextResponse } from 'next/server';
 
+/**
+ * Обработка POST-запроса для создания заказа
+ */
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-
-    // Здесь в будущем будет логика Цифрового рубля или ЮKassa
-    console.log('Данные заказа из 3D-шоурума:', body);
+    const data = await request.json();
+    
+    // Имитация логики сохранения в БД или вызова API Цифрового рубля
+    console.log('API Order Received:', data);
 
     return NextResponse.json({ 
       success: true, 
-      message: 'Заказ успешно создан в системе',
-      orderId: Math.random().toString(36).substring(7) 
+      orderId: `CR-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
+      status: 'pending_payment'
     });
   } catch (error) {
-    return NextResponse.json({ success: false, error: 'Invalid request' }, { status: 400 });
+    return NextResponse.json(
+      { success: false, message: 'Invalid JSON body' }, 
+      { status: 400 }
+    );
   }
 }
 
-// Добавим GET на случай, если ты просто откроешь ссылку в браузере
+/**
+ * Простая проверка работоспособности API через GET
+ */
 export async function GET() {
-  return NextResponse.json({ status: 'API is working' });
+  return NextResponse.json({ 
+    service: '3D Shop Order API',
+    version: '1.0.0',
+    status: 'online' 
+  });
 }
