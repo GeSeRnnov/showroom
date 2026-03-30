@@ -12,19 +12,22 @@ import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { useStore } from '@/store/useStore'
 import * as THREE from 'three'
+import { easing } from 'maath'
 // import { useFrames } from 'next/dist/next-devtools/dev-overlay/utils/get-error-by-type'
 
 export const Shoe = (props: any) =>  {
   const { nodes, materials } = useGLTF('/shoe.glb')
+  // const { sh} = materials
   const groupRef = useRef<THREE.Group>(null!) // Ссылка на группу объектов
   const color = useStore((state) => state.color)
   const { defaultMaterial } = nodes
 
   // Эта функция запускается 60 раз в секунду
-//   useFrame((state, delta) => {
-//     // delta — это время между кадрами (чтобы скорость была одинаковой везде)
-//     groupRef.current.rotation.y += delta * 0.5 // Вращаем по вертикальной оси
-//   })
+  useFrame((state, delta) => {
+    // Плавное изменение цвета материала в каждом кадре
+    // '0.25' — это скорость перехода, чем меньше, тем медленнее
+    // easing.dampC(materials.NikeShoe.color, color, 0.25, delta)
+  })
 
   return (
     <group ref={groupRef} {...props} dispose={null}>
